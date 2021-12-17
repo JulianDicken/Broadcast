@@ -128,6 +128,7 @@
     {"id":{"name":"MouseWheelDown","path":"scripts/MouseWheelDown/MouseWheelDown.yy",},"order":1,},
     {"id":{"name":"ease_in_out_sine","path":"scripts/ease_in_out_sine/ease_in_out_sine.yy",},"order":0,},
     {"id":{"name":"String","path":"scripts/String/String.yy",},"order":7,},
+    {"id":{"name":"oShowcase","path":"objects/oShowcase/oShowcase.yy",},"order":6,},
     {"id":{"name":"ease_in_back","path":"scripts/ease_in_back/ease_in_back.yy",},"order":0,},
     {"id":{"name":"ArrayList","path":"scripts/ArrayList/ArrayList.yy",},"order":0,},
     {"id":{"name":"ease_in_out_circ","path":"scripts/ease_in_out_circ/ease_in_out_circ.yy",},"order":1,},
