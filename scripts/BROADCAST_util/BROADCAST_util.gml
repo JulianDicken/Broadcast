@@ -1,3 +1,6 @@
+//toggle true for global watch unsafety.
+#macro BROADCAST_UNSAFE_WATCH_OVERRIDE false
+
 /// @func RecursiveBroadcastSubscription
 /// @desc	Thrown when a subscription would lead to an infinite loop
 /// @wiki Core-Index Errors

@@ -13,7 +13,7 @@ function __BROADCAST_class_broadcast(_block = function() {  }, _scope) : __Struc
 	static watch = function( _broadcast, _unsafe = false ) {
 		_broadcast.__subscribers.push( self );
 		
-		if (_unsafe) {
+		if (_unsafe || BROADCAST_UNSAFE_WATCH_OVERRIDE) {
 			return self;
 		}
 		if (!struct_type(_broadcast, __BROADCAST_class_broadcast)) {
