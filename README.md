@@ -18,6 +18,8 @@ prints:
  **Broadcasts** are event sources and **dispatching** them cascades event invocation down to
  **Broadcast Hooks**. **Broadcasts** *can* be **Broadcast Hooks**.
 
+ ---
+
 ```js
 hello = Broadcast( function() {
  	syslog("Hello, ");
@@ -36,6 +38,9 @@ hello.dispatch();
  ```
 This creates a **Subscriber**. A **Subscriber** is a type of **Broadcast Hook**.
 A **Subscriber** can only watch **Broadcasts** and cannot cascade **dispatches** downwards.
+
+---
+
 ```js
 update = Broadcast( function() {
  	syslog("Update");
@@ -57,6 +62,8 @@ prints:
  A **Viewer** can only watch **Broadcasts** and cannot cascade **dispatches** downwards.
  A **Viewer** will only be **dispatched** once.
 
+ ---
+
  A **Viewer** may need to be disposed manually or defined using the `var` keyboard :
  ```js
 foo = Broadcast( function() {
@@ -72,6 +79,8 @@ manual_dispose = Viewer( function() {
  ```
  In this context both **Viewers** will be garbage collected after they are called.
  I recommend using `var` when using **Viewers**
+
+ ---
 
  Combined **Subscribers** and **Viewers** can be used as following:
  ```js
@@ -97,6 +106,8 @@ prints:
 "Other Frame!"
 ```
 
+---
+
 As previously mentioned **Broadcasts** can be **Broadcast Hooks** too :
 ```js
 hello = Broadcast( function() {
@@ -114,6 +125,9 @@ hello.dispatch();
 "Hello, "
 "World!"
  ```
+
+---
+
 This introduces potential problems due to recursion but BROADCAST tries to warn the User of Recursive Subscriptions.
 
 ```js
@@ -137,6 +151,8 @@ recursive_fiend_one.dispatch();
 ```
 Crashes with RecursiveSubscriptionError or RecursiveDispatchError, depending on the set **Safety Flags**.
 
+---
+
 Unfortunately these safety checks are quite expensive.
 To circumvent them locally you can call the private version of either `watch` or `dispatch` :
 ```js
@@ -157,6 +173,8 @@ prints:
 "I called myself!"
 ```
 
+---
+
 To circumvent them globally you can modify the **Safety Flags** in BROADCAST_util :
 ```js
 #macro BROADCAST_SAFETY_FLAGS BROADCAST_SAFETY_LEVEL.WATCH | BROADCAST_SAFETY_LEVEL.DISPATCH
@@ -167,7 +185,7 @@ enum BROADCAST_SAFETY_LEVEL {
 }
 ```
 This is the default configuration.
-To disable a flag remove it from the macro :
+To disable a flag simply remove it from the macro :
 ```js
 #macro BROADCAST_SAFETY_FLAGS BROADCAST_SAFETY_LEVEL.DISPATCH
 
