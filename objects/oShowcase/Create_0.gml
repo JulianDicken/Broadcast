@@ -1,10 +1,9 @@
-#region how-to
 //this creates a broadcaster
 //it is good practice to provide the scope of the instance you are creating the broadcaster in
 //this way error messages can be more accurate
 hello = Broadcast( function() {
 	syslog("Hello, ");	
-}, id);
+});
 
 world = Subscriber( function() {
 	syslog("World!");
@@ -48,8 +47,6 @@ hello.dispatch();
 //Example!
 
 //example will now be gced. 
-#endregion
-#region recursive operations
 //broadcasts can subscribe to other broadcasts : 
 A = Broadcast(function() {
 	syslog("A");	
@@ -67,11 +64,16 @@ C = Broadcast(function() {
 	syslog("C");	
 }, id);
 C.watch(C);
-//crashes with RecursiveSubscriptionError
+C.dispatch();
+//crashes with RecursiveSubscriptionError if the "watch" safety flag is set
+//crashes with RecursiveDispatchError if the "dispatch" safety flag is set
+//to ignore the safety locally call the private __dispatch member instead : 
+C.__dispatch();
 D = Broadcast(function() {
 	syslog("D");	
 }, id).watch(A);
 A.watch(D);
+A.dispatch();
 //crashes with RecursiveSubscriptionError
 
 //for performance gains you can toggle off the safety locally.
@@ -79,6 +81,4 @@ E = Broadcast(function() {
 	syslog("E");	
 }, id);
 E.watch(E, true);
-//for a global unsafe toggle check BROADCAST_util.
-
-#endregion
+//for a global unsafety levels check BROADCAST_util.

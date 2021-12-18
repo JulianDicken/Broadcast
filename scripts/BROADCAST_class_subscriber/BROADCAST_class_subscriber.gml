@@ -17,7 +17,7 @@ function __BROADCAST_class_subscriber(_block = function() {  }, _scope) : __Stru
 		return self;
 	}
 	
-	static dispatch = function() {
+	static __dispatch = function() {
 		__block();	
 	}
 	

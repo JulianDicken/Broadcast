@@ -3,7 +3,7 @@
 // # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //	If set to true, the event system will not be created.  Events can still be used,
 //	but they will have to be managed manually.
-#macro FAST_DISABLE_EVENTS	false
+#macro FAST_DISABLE_EVENTS	true
 
 // # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // #							End of User Defines

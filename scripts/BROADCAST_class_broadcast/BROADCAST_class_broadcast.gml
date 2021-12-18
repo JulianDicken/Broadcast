@@ -13,7 +13,7 @@ function __BROADCAST_class_broadcast(_block = function() {  }, _scope) : __Struc
 	static watch = function( _broadcast, _unsafe = false ) {
 		_broadcast.__subscribers.push( self );
 		
-		if (_unsafe || BROADCAST_UNSAFE_WATCH_OVERRIDE) {
+		if (_unsafe || not (BROADCAST_SAFETY_FLAGS & BROADCAST_SAFETY_LEVEL.WATCH)) {
 			return self;
 		}
 		if (!struct_type(_broadcast, __BROADCAST_class_broadcast)) {
@@ -30,20 +30,32 @@ function __BROADCAST_class_broadcast(_block = function() {  }, _scope) : __Struc
 	}
 	
 	static dispatch = function() {
+		__recursive_stack_limit = 0xFFFF;
+		__dispatch();	
+	}
+	
+	static toString = function() {
+		
+	}
+	
+	static __dispatch = function() {
+		if (BROADCAST_SAFETY_FLAGS & BROADCAST_SAFETY_LEVEL.DISPATCH) {
+			if (--__recursive_stack_limit <= 0) {
+				throw new RecursiveDispatchError(self);	
+			}
+		}
 		__block();
 		
 		var _i = 0; repeat( __subscribers.size()) {
             if (struct_type(__subscribers.index(_i), __BROADCAST_class_viewer))
-                __subscribers.pop(_i).dispatch();
+                __subscribers.pop(_i).__dispatch();
             else
-                __subscribers.index(_i++).dispatch();
+                __subscribers.index(_i++).__dispatch();
         }
 	}
 	
 	static __contains = function( _broadcast ) {
-		__recursive_stack_limit--;
-
-		if (__recursive_stack_limit <= 0) {
+		if (--__recursive_stack_limit <= 0) {
 			return true;
 		}
 	
@@ -61,4 +73,5 @@ function __BROADCAST_class_broadcast(_block = function() {  }, _scope) : __Struc
 		}
 		return false;
 	}
+	
 }

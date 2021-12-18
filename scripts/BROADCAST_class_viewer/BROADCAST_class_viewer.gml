@@ -17,7 +17,7 @@ function __BROADCAST_class_viewer(_block = function() {  }, _scope) : __Struct__
 		return self;
 	}
 	
-	static dispatch = function() {		
+	static __dispatch = function() {		
 		__block();	
 	}
 	
