@@ -3,17 +3,18 @@ function __BROADCAST_class_broadcast(_block = function() {  }, _scope) : __Struc
 	static __recursive_stack_limit = 0xFFFF;
 	__id = __num_id;
 	
-	__scope = _scope ?? self;
+	__scope = _scope ?? method_get_self(_block);
+	syslog(__scope);
 	__block = method(__scope, _block);
 	__subscribers = new ArrayList();
 	
 	__Type__.add( __BROADCAST_class_broadcast );
 	__Type__.add( __BROADCAST_class_hook__ );
 	
-	static watch = function( _broadcast, _unsafe = false ) {
-		_broadcast.__subscribers.push( self );
+	static watch = function( _broadcast ) {
+		__watch( _broadcast );
 		
-		if (_unsafe || not (BROADCAST_SAFETY_FLAGS & BROADCAST_SAFETY_LEVEL.WATCH)) {
+		if not (BROADCAST_SAFETY_FLAGS & BROADCAST_SAFETY_LEVEL.WATCH) {
 			return self;
 		}
 		if (!struct_type(_broadcast, __BROADCAST_class_broadcast)) {
@@ -36,6 +37,10 @@ function __BROADCAST_class_broadcast(_block = function() {  }, _scope) : __Struc
 	
 	static toString = function() {
 		
+	}
+	
+	static __watch = function( _broadcast ) {
+		_broadcast.__subscribers.push( self );	
 	}
 	
 	static __dispatch = function() {

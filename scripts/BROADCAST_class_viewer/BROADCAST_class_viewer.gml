@@ -2,7 +2,7 @@ function __BROADCAST_class_viewer(_block = function() {  }, _scope) : __Struct__
 	static __num_id = 0; __num_id++;
 	__id = __num_id;
 	
-	__scope = _scope ?? self;
+	__scope = _scope ??  method_get_self(_block);
 	__block = method(__scope, _block);
 	
 	__Type__.add( __BROADCAST_class_viewer );
@@ -17,11 +17,11 @@ function __BROADCAST_class_viewer(_block = function() {  }, _scope) : __Struct__
 		return self;
 	}
 	
-	static __dispatch = function() {		
-		__block();	
-	}
-	
 	static toString = function() {
 		
+	}
+	
+	static __dispatch = function() {		
+		__block();	
 	}
 }
