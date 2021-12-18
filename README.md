@@ -2,6 +2,7 @@
  An Event Handling library written in gml.
 
  ---
+### Broadcasts
 ```js
 hello = Broadcast( function() {
  	syslog("Hello, ");
@@ -19,7 +20,7 @@ prints:
  **Broadcast Hooks**. **Broadcasts** *can* be **Broadcast Hooks**.
 
  ---
-
+### Subscribers
 ```js
 hello = Broadcast( function() {
  	syslog("Hello, ");
@@ -40,7 +41,7 @@ This creates a **Subscriber**. A **Subscriber** is a type of **Broadcast Hook**.
 A **Subscriber** can only watch **Broadcasts** and cannot cascade **dispatches** downwards.
 
 ---
-
+### Viewers
 ```js
 update = Broadcast( function() {
  	syslog("Update");
@@ -107,7 +108,7 @@ prints:
 ```
 
 ---
-
+### Safety
 As previously mentioned **Broadcasts** can be **Broadcast Hooks** too :
 ```js
 hello = Broadcast( function() {
