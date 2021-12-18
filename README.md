@@ -15,9 +15,6 @@ prints:
 ```
 
  This creates a **Broadcast** and then **dispatches** it.
-**Dispatching** a broadcast causes the **dispatch** call to cascade down the
-**Broadcast Hook** hierarchy.
-
  **Broadcasts** are event sources and **dispatching** them cascades event invocation down to
  **Broadcast Hooks**. **Broadcasts** *can* be **Broadcast Hooks**.
 
