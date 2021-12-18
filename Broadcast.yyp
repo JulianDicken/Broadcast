@@ -24,7 +24,6 @@
     {"id":{"name":"string_combine","path":"scripts/string_combine/string_combine.yy",},"order":1,},
     {"id":{"name":"gfx_sys_terminal0","path":"sprites/gfx_sys_terminal0/gfx_sys_terminal0.yy",},"order":1,},
     {"id":{"name":"__FASTtool","path":"objects/__FASTtool/__FASTtool.yy",},"order":4,},
-    {"id":{"name":"oShowcase","path":"objects/oShowcase/oShowcase.yy",},"order":6,},
     {"id":{"name":"string_pad","path":"scripts/string_pad/string_pad.yy",},"order":7,},
     {"id":{"name":"string_find_first","path":"scripts/string_find_first/string_find_first.yy",},"order":4,},
     {"id":{"name":"string_formatted","path":"scripts/string_formatted/string_formatted.yy",},"order":5,},
