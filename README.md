@@ -46,7 +46,7 @@ A **Subscriber** can only watch **Broadcasts** and cannot cascade **dispatches**
 update = Broadcast( function() {
  	syslog("Update");
 });
-first_frame = Viewer( function() {
+Viewer( function() {
  	syslog("First Frame!");
 }).watch(update);
 
@@ -68,18 +68,21 @@ prints:
  A **Viewer** may need to be disposed manually or defined using the `var` keyboard :
  ```js
 foo = Broadcast( function() {
-
+    //your code here
 });
 manual_dispose = Viewer( function() {
+    //your code here
     manual_dispose = undefined;
  }).watch(foo);
- var automatic_dispose = Viewer( function() {
 
-  }).watch(foo);
+ //automatic disposal
+ Viewer( function() {
+   //your code here
+}).watch(foo);
  update.dispatch();
  ```
  In this context both **Viewers** will be garbage collected after they are called.
- I recommend using `var` when using **Viewers**
+ I recommend either not assigning **Viewers** or using `var` when using **Viewers**.
 
  ---
 
@@ -88,7 +91,7 @@ manual_dispose = Viewer( function() {
  update = Broadcast( function() {
   	syslog("Update");
  });
- first_frame = Viewer( function() {
+ Viewer( function() {
   	syslog("First Frame!");
  }).watch(update);
  other_frames = Subscriber( function() {
