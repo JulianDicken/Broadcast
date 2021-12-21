@@ -1,13 +1,33 @@
-#macro BROADCAST_SAFETY_FLAGS BROADCAST_SAFETY_LEVEL.WATCH | BROADCAST_SAFETY_LEVEL.DISPATCH
+#macro BROADCAST_SAFETY_FLAGS \
+	BROADCAST_SAFETY_LEVEL.RECURSIVE_WATCH |\
+	BROADCAST_SAFETY_LEVEL.DISPATCH |\
+	BROADCAST_SAFETY_LEVEL.TYPECHECK
 
 enum BROADCAST_SAFETY_LEVEL {
-	WATCH = 0x01,
-	DISPATCH = 0x02
+	RECURSIVE_WATCH = 0x01,
+	DISPATCH = 0x02,
+	TYPECHECK = 0x04
 }
-/// @func RecursiveBroadcastSubscription
-/// @desc	Thrown when a subscription would lead to an infinite loop
+
+
+//namespace shenanigans
+function Broadcast(_block = function() { }, _scope = undefined) {
+	return new __BROADCAST_class_broadcast(_block, _scope)	
+}
+function Subscriber(_block = function() { }, _scope = undefined) {
+	return new __BROADCAST_class_subscriber(_block, _scope)	
+}
+function Viewer(_block = function() { }, _scope = undefined) {
+	return new __BROADCAST_class_viewer(_block, _scope)	
+}
+function Watchlist() {
+	return new __BROADCAST_class_watchlist();	
+}
+
+/// @func RecursiveBroadcastWatch
+/// @desc	Thrown when a subscription would lead tos an infinite loop
 /// @wiki Core-Index Errors
-function RecursiveBroadcastSubscription( _watcher, _broadcast ) : __Error__() constructor {
+function RecursiveBroadcastWatch( _watcher, _broadcast ) : __Error__() constructor {
 	var _watcherName = "unknown"
 	if (_watcher.__scope != _watcher) {
 		_watcherName = "anonymous";	
@@ -51,6 +71,9 @@ function RecursiveBroadcastSubscription( _watcher, _broadcast ) : __Error__() co
 	);
 }
 
+/// @func RecursiveBroadcastWatch
+/// @desc	Thrown when a dispatch lead to an infinite loop
+/// @wiki Core-Index Errors
 function RecursiveDispatchError( _broadcast ) : __Error__() constructor {
 	var _broadcastName = "unknown"
 	if (_broadcast.__scope != _broadcast) {
@@ -80,15 +103,4 @@ function RecursiveDispatchError( _broadcast ) : __Error__() constructor {
 //type flag
 function __BROADCAST_class_hook__() : __Struct__() constructor {
 	__Type__.add( __BROADCAST_class_hook__ );
-}
-
-//namespace shenanigans
-function Broadcast(_block = function() { }, _scope = undefined) {
-	return new __BROADCAST_class_broadcast(_block, _scope)	
-}
-function Subscriber(_block = function() { }, _scope = undefined) {
-	return new __BROADCAST_class_subscriber(_block, _scope)	
-}
-function Viewer(_block = function() { }, _scope = undefined) {
-	return new __BROADCAST_class_viewer(_block, _scope)	
 }

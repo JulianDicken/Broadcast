@@ -4,28 +4,28 @@ function __BROADCAST_class_broadcast(_block = function() {  }, _scope) : __Struc
 	__id = __num_id;
 	
 	__scope = _scope ?? method_get_self(_block);
-	syslog(__scope);
 	__block = method(__scope, _block);
-	__subscribers = new ArrayList();
+	__hooks = new ArrayList();
 	
 	__Type__.add( __BROADCAST_class_broadcast );
 	__Type__.add( __BROADCAST_class_hook__ );
 	
 	static watch = function( _broadcast ) {
-		__watch( _broadcast );
-		
-		if not (BROADCAST_SAFETY_FLAGS & BROADCAST_SAFETY_LEVEL.WATCH) {
-			return self;
-		}
-		if (!struct_type(_broadcast, __BROADCAST_class_broadcast)) {
+		if  not (BROADCAST_SAFETY_FLAGS & BROADCAST_SAFETY_LEVEL.TYPECHECK) &&
+			not struct_type(_broadcast, __BROADCAST_class_broadcast) {
 			throw new InvalidArgumentType("watch", 0, _broadcast, "__BROADCAST_class_broadcast"); 
 		}
+		__watch( _broadcast );
+		
+		if not (BROADCAST_SAFETY_FLAGS & BROADCAST_SAFETY_LEVEL.RECURSIVE_WATCH) {
+			return self;
+		}
 		if (_broadcast == self) {
-			throw new RecursiveBroadcastSubscription(self, self);
+			throw new RecursiveBroadcastWatch(self, self);
 		}
 		__recursive_stack_limit = 0xFFFF;
 		if (_broadcast.__contains(self)) {
-			throw new RecursiveBroadcastSubscription(self, _broadcast);
+			throw new RecursiveBroadcastWatch(self, _broadcast);
 		}
 		return self;
 	}
@@ -40,7 +40,7 @@ function __BROADCAST_class_broadcast(_block = function() {  }, _scope) : __Struc
 	}
 	
 	static __watch = function( _broadcast ) {
-		_broadcast.__subscribers.push( self );	
+		_broadcast.__hooks.push( self );	
 	}
 	
 	static __dispatch = function() {
@@ -51,11 +51,11 @@ function __BROADCAST_class_broadcast(_block = function() {  }, _scope) : __Struc
 		}
 		__block();
 		
-		var _i = 0; repeat( __subscribers.size()) {
-            if (struct_type(__subscribers.index(_i), __BROADCAST_class_viewer))
-                __subscribers.pop(_i).__dispatch();
+		var _i = 0; repeat( __hooks.size()) {
+            if (struct_type(__hooks.index(_i), __BROADCAST_class_viewer))
+                __hooks.pop(_i).__dispatch();
             else
-                __subscribers.index(_i++).__dispatch();
+                __hooks.index(_i++).__dispatch();
         }
 	}
 	
@@ -65,13 +65,13 @@ function __BROADCAST_class_broadcast(_block = function() {  }, _scope) : __Struc
 		}
 	
 		var el;
-		var _i = 0; repeat( __subscribers.size()) {
-			el = __subscribers.index(_i++);
+		var _i = 0; repeat( __hooks.size()) {
+			el = __hooks.index(_i++);
 			if (struct_type(el, __BROADCAST_class_broadcast)) {
-				if (el.__subscribers.contains( _broadcast )) {
+				if (el.__hooks.contains( _broadcast )) {
 					return true;	
 				}
-				if (el.__contains( _broadcast )) {
+				if (el.__hooks( _broadcast )) {
 					return true;	
 				}
 			}
