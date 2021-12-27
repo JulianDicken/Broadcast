@@ -109,6 +109,26 @@ prints:
 "Update"
 "Other Frame!"
 ```
+---
+### Watchlists
+**Watchlists** serve as **Broadcast** queues :
+```js
+watchlist = Watchlist();
+broadcastA = Broadcast( function() {
+  syslog("Dispatched broadcastA.")
+});
+broadcastB = Broadcast( function() {
+  syslog("Dispatched broadcastB.")
+});
+watchlist.add( broadcastA );
+watchlist.add( broadcastB );
+
+Viewer( function() {
+  syslog("Watchlist Finished!")
+}).watch( watchlist.onFinished );
+```
+Once all registered **Broadcasts** have been dispatched the `watchlist.OnFinished` **Broadcast** will be dispatched.
+It is important to call `watchlist.update();` in an update loop (I recommend the begin step event), otherwise this won't work.
 
 ---
 ### Safety
@@ -129,7 +149,6 @@ hello.dispatch();
 "Hello, "
 "World!"
  ```
-
 ---
 
 This introduces potential problems due to recursion but BROADCAST tries to warn the User of Recursive Subscriptions.
@@ -154,7 +173,6 @@ recursive_fiend_two.watch(recursive_fiend_one);
 recursive_fiend_one.dispatch();
 ```
 Crashes with RecursiveSubscriptionError or RecursiveDispatchError, depending on the set **Safety Flags**.
-
 ---
 
 Unfortunately these safety checks are quite expensive.
@@ -179,23 +197,30 @@ prints:
 
 ---
 
-To circumvent them globally you can modify the **Safety Flags** in BROADCAST_util :
+To circumvent them globally you can modify the **Safety Flags** in BROADCAST_util.
+This is the default configuration :
 ```js
-#macro BROADCAST_SAFETY_FLAGS BROADCAST_SAFETY_LEVEL.WATCH | BROADCAST_SAFETY_LEVEL.DISPATCH
+#macro BROADCAST_SAFETY_FLAGS \
+	BROADCAST_SAFETY_LEVEL.RECURSIVE_WATCH |\
+	BROADCAST_SAFETY_LEVEL.DISPATCH |\
+	BROADCAST_SAFETY_LEVEL.TYPECHECK
 
 enum BROADCAST_SAFETY_LEVEL {
-	WATCH = 0x01,
-	DISPATCH = 0x02
+	RECURSIVE_WATCH = 0x01,
+	DISPATCH = 0x02,
+	TYPECHECK = 0x04
 }
 ```
-This is the default configuration.
 To disable a flag simply remove it from the macro :
 ```js
-#macro BROADCAST_SAFETY_FLAGS BROADCAST_SAFETY_LEVEL.DISPATCH
+#macro BROADCAST_SAFETY_FLAGS \
+	BROADCAST_SAFETY_LEVEL.DISPATCH |\
+	BROADCAST_SAFETY_LEVEL.TYPECHECK
 
 enum BROADCAST_SAFETY_LEVEL {
-	WATCH = 0x01,
-	DISPATCH = 0x02
+	RECURSIVE_WATCH = 0x01,
+	DISPATCH = 0x02,
+	TYPECHECK = 0x04
 }
 ```
 

@@ -21,7 +21,7 @@ function __BROADCAST_class_watchlist() : __Struct__() constructor  {
 				if  (__registry.size() == 0) {
 					onFinished.dispatch();	
 				}
-			}
+			} 
 		}
 	}
 }
