@@ -1,26 +1,89 @@
 #macro BROADCAST_SAFETY_FLAGS \
-	BROADCAST_SAFETY_LEVEL.RECURSIVE_WATCH |\
-	BROADCAST_SAFETY_LEVEL.DISPATCH |\
-	BROADCAST_SAFETY_LEVEL.TYPECHECK
+	BROADCAST_SAFETY.RECURSIVE_WATCH |\
+	BROADCAST_SAFETY.DISPATCH |\
+	BROADCAST_SAFETY.TYPECHECK
+	
+#macro BROADCAST_BEHAVIOUR_FLAGS \
+	BROADCAST_BEHAVIOUR.USE_OBJECT_POOL 
+	//BROADCAST_BEHAVIOUR.REASSIGN_INSTANCE_ID
 
-enum BROADCAST_SAFETY_LEVEL {
+enum BROADCAST_SAFETY {
 	RECURSIVE_WATCH = 0x01,
 	DISPATCH = 0x02,
 	TYPECHECK = 0x04
 }
-
+enum BROADCAST_BEHAVIOUR {
+	USE_OBJECT_POOL = 0x01,
+	REASSIGN_INSTANCE_ID = 0x02,
+}
 
 //namespace shenanigans
 function Broadcast(_block = function() { }, _scope = undefined) {
+	if (BROADCAST_BEHAVIOUR_FLAGS & BROADCAST_BEHAVIOUR.USE_OBJECT_POOL) {
+		static __pool__ = new ObjectPool( function() {
+			return new __BROADCAST_class_broadcast();
+		});
+		var __inst = __pool__.get();
+			__inst.__pool__ = __pool__;
+			__inst.__init__(_block, _scope);
+			if (BROADCAST_BEHAVIOUR_FLAGS & BROADCAST_BEHAVIOUR.REASSIGN_INSTANCE_ID 
+				&& __inst.__id = undefined) {
+				__inst.__num_id++;
+				__inst.__id = __inst.__num_id;
+			}
+		return __inst;
+	}
 	return new __BROADCAST_class_broadcast(_block, _scope)	
 }
 function Subscriber(_block = function() { }, _scope = undefined) {
+	if (BROADCAST_BEHAVIOUR_FLAGS & BROADCAST_BEHAVIOUR.USE_OBJECT_POOL) {
+		static __pool__ = new ObjectPool( function() {
+			return new __BROADCAST_class_subscriber();
+		});
+		var __inst = __pool__.get();
+			__inst.__pool__ = __pool__;
+			__inst.__init__(_block, _scope);
+			if (BROADCAST_BEHAVIOUR_FLAGS & BROADCAST_BEHAVIOUR.REASSIGN_INSTANCE_ID 
+				&& __inst.__id = undefined) {
+				__inst.__num_id++;
+				__inst.__id = __inst.__num_id;
+			}
+		return __inst;
+	}
 	return new __BROADCAST_class_subscriber(_block, _scope)	
 }
 function Viewer(_block = function() { }, _scope = undefined) {
+	if (BROADCAST_BEHAVIOUR_FLAGS & BROADCAST_BEHAVIOUR.USE_OBJECT_POOL) {
+		static __pool__ = new ObjectPool( function() {
+			return new __BROADCAST_class_viewer();
+		});
+		var __inst = __pool__.get();
+			__inst.__pool__ = __pool__;
+			__inst.__init__(_block, _scope);
+			if (BROADCAST_BEHAVIOUR_FLAGS & BROADCAST_BEHAVIOUR.REASSIGN_INSTANCE_ID 
+				&& __inst.__id = undefined) {
+				__inst.__num_id++;
+				__inst.__id = __inst.__num_id;
+			}
+		return __inst;
+	}
 	return new __BROADCAST_class_viewer(_block, _scope)	
 }
 function Watchlist() {
+	if (BROADCAST_BEHAVIOUR_FLAGS & BROADCAST_BEHAVIOUR.USE_OBJECT_POOL) {
+		static __pool__ = new ObjectPool( function() {
+			return new __BROADCAST_class_watchlist();
+		});
+		var __inst = __pool__.get();
+			__inst.__pool__ = __pool__;
+			__inst.__init__();
+			if (BROADCAST_BEHAVIOUR_FLAGS & BROADCAST_BEHAVIOUR.REASSIGN_INSTANCE_ID 
+				&& __inst.__id = undefined) {
+				__inst.__num_id++;
+				__inst.__id = __inst.__num_id;
+			}
+		return weak_ref_create(__inst);
+	}
 	return new __BROADCAST_class_watchlist();	
 }
 

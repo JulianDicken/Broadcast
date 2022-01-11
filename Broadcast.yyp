@@ -18,6 +18,7 @@
     {"id":{"name":"__Struct__","path":"scripts/__Struct__/__Struct__.yy",},"order":5,},
     {"id":{"name":"BROADCAST_class_broadcast","path":"scripts/BROADCAST_class_broadcast/BROADCAST_class_broadcast.yy",},"order":1,},
     {"id":{"name":"struct_type","path":"scripts/struct_type/struct_type.yy",},"order":1,},
+    {"id":{"name":"ObjectPool","path":"scripts/ObjectPool/ObjectPool.yy",},"order":1,},
     {"id":{"name":"font_sys_debug","path":"fonts/font_sys_debug/font_sys_debug.yy",},"order":0,},
     {"id":{"name":"__InputStream__","path":"scripts/__InputStream__/__InputStream__.yy",},"order":1,},
     {"id":{"name":"string_evaluate","path":"scripts/string_evaluate/string_evaluate.yy",},"order":2,},
