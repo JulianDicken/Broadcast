@@ -19,6 +19,15 @@ function __BROADCAST_class_subscriber(_block = function() {  }, _scope) : __Stru
 		
 	}
 	
+	static destroy = function() {
+		if (BROADCAST_BEHAVIOUR_FLAGS & BROADCAST_BEHAVIOUR.USE_OBJECT_POOL) {
+			__pool__.put( self );
+			if (BROADCAST_BEHAVIOUR_FLAGS & BROADCAST_BEHAVIOUR.REASSIGN_INSTANCE_ID) {
+				__id = undefined;	
+			}
+		}
+	}
+	
 	static __dispatch = function() {
 		__block();	
 	}
