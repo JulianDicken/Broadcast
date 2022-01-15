@@ -80,7 +80,7 @@ function __BROADCAST_class_broadcast(_block = function() {  }, _scope) : __Struc
 				if (el.__hooks.contains( _broadcast )) {
 					return true;	
 				}
-				if (el.__hooks( _broadcast )) {
+				if (el.__contains( _broadcast )) {
 					return true;	
 				}
 			}
