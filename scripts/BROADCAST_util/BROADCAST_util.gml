@@ -82,7 +82,7 @@ function Watchlist() {
 				__inst.__num_id++;
 				__inst.__id = __inst.__num_id;
 			}
-		return weak_ref_create(__inst);
+		return __inst;
 	}
 	return new __BROADCAST_class_watchlist();	
 }

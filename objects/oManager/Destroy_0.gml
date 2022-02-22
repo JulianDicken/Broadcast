@@ -1,0 +1,1 @@
+buttonWatchlist.destroy();

@@ -1,8 +1,9 @@
 function __BROADCAST_class_watchlist() : __Struct__() constructor  {
 	static __num_id = 0; __num_id++;
 	static __pool__ = undefined;
+	static __recursive_stack_limit = 0xFFFF;
 	__id = __num_id;
-
+	
 	static add = function( _broadcast ) {
 		if  not (BROADCAST_SAFETY_FLAGS & BROADCAST_SAFETY.TYPECHECK) &&
 			not struct_type(_broadcast, __BROADCAST_class_broadcast) {
@@ -15,11 +16,13 @@ function __BROADCAST_class_watchlist() : __Struct__() constructor  {
 	}
 	
 	static update = function() {
-		var i = -1; repeat ( __registry.size() ) { i++;
-			if not weak_ref_alive( __registry.index(i)) {
+		var el;
+		var i = __registry.size(); repeat ( __registry.size() ) { i--;
+			el = __registry.index(i);
+			if (!weak_ref_alive( el ) || el.ref.__expired) {
 				__registry.pop(i);	
 				if  (__registry.size() == 0) {
-					onFinished.dispatch();	
+					dispatch();	
 				}
 			} 
 		}
@@ -34,9 +37,31 @@ function __BROADCAST_class_watchlist() : __Struct__() constructor  {
 		}
 	}
 	
+	static dispatch = function() {
+		__recursive_stack_limit = 0xFFFF;
+		__dispatch();	
+	}
+	
+	static __dispatch = function() {
+		if (BROADCAST_SAFETY_FLAGS & BROADCAST_SAFETY.DISPATCH) {
+			if (--__recursive_stack_limit <= 0) {
+				throw new RecursiveDispatchError(self);	
+			}
+		}
+		var _i = 0; repeat( __hooks.size()) {
+            if (struct_type(__hooks.index(_i), __BROADCAST_class_viewer)) {
+				var viewer = __hooks.pop(_i);
+				viewer.__dispatch();
+				viewer.destroy();
+			}
+            else
+                __hooks.index(_i++).__dispatch();
+        }
+	}
+	
 	static __init__ = function() {
-		__registry	= new ArrayList();
-		onFinished	= Broadcast();
+		__registry = new ArrayList();
+		__hooks	= new ArrayList();
 	}
 	
 	__init__();

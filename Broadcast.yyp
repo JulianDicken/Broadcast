@@ -5,6 +5,8 @@
     {"id":{"name":"gfx_sys_disk0","path":"sprites/gfx_sys_disk0/gfx_sys_disk0.yy",},"order":0,},
     {"id":{"name":"error_type","path":"scripts/error_type/error_type.yy",},"order":0,},
     {"id":{"name":"__FAST_config__","path":"scripts/__FAST_config__/__FAST_config__.yy",},"order":3,},
+    {"id":{"name":"oButtonExample","path":"objects/oButtonExample/oButtonExample.yy",},"order":3,},
+    {"id":{"name":"sTest","path":"sprites/sTest/sTest.yy",},"order":5,},
     {"id":{"name":"BROADCAST_class_subscriber","path":"scripts/BROADCAST_class_subscriber/BROADCAST_class_subscriber.yy",},"order":2,},
     {"id":{"name":"string_from_time","path":"scripts/string_from_time/string_from_time.yy",},"order":6,},
     {"id":{"name":"BROADCAST_class_viewer","path":"scripts/BROADCAST_class_viewer/BROADCAST_class_viewer.yy",},"order":3,},
@@ -13,6 +15,7 @@
     {"id":{"name":"string_explode","path":"scripts/string_explode/string_explode.yy",},"order":3,},
     {"id":{"name":"__OutputStream__","path":"scripts/__OutputStream__/__OutputStream__.yy",},"order":3,},
     {"id":{"name":"BROADCAST_util","path":"scripts/BROADCAST_util/BROADCAST_util.yy",},"order":5,},
+    {"id":{"name":"oManager","path":"objects/oManager/oManager.yy",},"order":4,},
     {"id":{"name":"__Error__","path":"scripts/__Error__/__Error__.yy",},"order":0,},
     {"id":{"name":"BROADCAST_class_watchlist","path":"scripts/BROADCAST_class_watchlist/BROADCAST_class_watchlist.yy",},"order":4,},
     {"id":{"name":"__Struct__","path":"scripts/__Struct__/__Struct__.yy",},"order":5,},
@@ -41,7 +44,6 @@
   ],
   "isDnDProject": false,
   "isEcma": false,
-  "tutorialPath": "",
   "configs": {
     "name": "Default",
     "children": [],
@@ -71,7 +73,7 @@
   ],
   "IncludedFiles": [],
   "MetaData": {
-    "IDEVersion": "2.3.7.606",
+    "IDEVersion": "2022.1.1.610",
   },
   "resourceVersion": "1.4",
   "name": "Broadcast",
