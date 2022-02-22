@@ -1,6 +1,6 @@
 function __BROADCAST_class_watchlist() : __Struct__() constructor  {
 	static __num_id = 0; __num_id++;
-	static __pool__ = undefined;
+	__pool__ = undefined;
 	static __recursive_stack_limit = 0xFFFF;
 	__id = __num_id;
 	
@@ -60,9 +60,11 @@ function __BROADCAST_class_watchlist() : __Struct__() constructor  {
 	}
 	
 	static __init__ = function() {
+		if (BROADCAST_BEHAVIOUR_FLAGS & BROADCAST_BEHAVIOUR.REASSIGN_INSTANCE_ID && __id = undefined) {
+			__num_id++;
+			__id = __num_id;
+		}
 		__registry = new ArrayList();
 		__hooks	= new ArrayList();
 	}
-	
-	__init__();
 }

@@ -19,72 +19,60 @@ enum BROADCAST_BEHAVIOUR {
 
 //namespace shenanigans
 function Broadcast(_block = function() { }, _scope = undefined) {
+	var __inst;
 	if (BROADCAST_BEHAVIOUR_FLAGS & BROADCAST_BEHAVIOUR.USE_OBJECT_POOL) {
 		static __pool__ = new ObjectPool( function() {
 			return new __BROADCAST_class_broadcast();
 		});
-		var __inst = __pool__.get();
-			__inst.__pool__ = __pool__;
-			__inst.__init__(_block, _scope);
-			if (BROADCAST_BEHAVIOUR_FLAGS & BROADCAST_BEHAVIOUR.REASSIGN_INSTANCE_ID 
-				&& __inst.__id = undefined) {
-				__inst.__num_id++;
-				__inst.__id = __inst.__num_id;
-			}
-		return __inst;
+		__inst = __pool__.get();
+		__inst.__pool__ = __pool__;
+	} else {
+		__inst =  new __BROADCAST_class_broadcast();
 	}
-	return new __BROADCAST_class_broadcast(_block, _scope)	
+	__inst.__init__(_block, _scope);
+	return __inst;
 }
 function Subscriber(_block = function() { }, _scope = undefined) {
+	var __inst;
 	if (BROADCAST_BEHAVIOUR_FLAGS & BROADCAST_BEHAVIOUR.USE_OBJECT_POOL) {
 		static __pool__ = new ObjectPool( function() {
 			return new __BROADCAST_class_subscriber();
 		});
-		var __inst = __pool__.get();
-			__inst.__pool__ = __pool__;
-			__inst.__init__(_block, _scope);
-			if (BROADCAST_BEHAVIOUR_FLAGS & BROADCAST_BEHAVIOUR.REASSIGN_INSTANCE_ID 
-				&& __inst.__id = undefined) {
-				__inst.__num_id++;
-				__inst.__id = __inst.__num_id;
-			}
-		return __inst;
+		__inst = __pool__.get();
+		__inst.__pool__ = __pool__;
+	} else {
+		__inst =  new __BROADCAST_class_subscriber();
 	}
-	return new __BROADCAST_class_subscriber(_block, _scope)	
+	__inst.__init__(_block, _scope);
+	return __inst;
 }
 function Viewer(_block = function() { }, _scope = undefined) {
+	var __inst;
 	if (BROADCAST_BEHAVIOUR_FLAGS & BROADCAST_BEHAVIOUR.USE_OBJECT_POOL) {
 		static __pool__ = new ObjectPool( function() {
 			return new __BROADCAST_class_viewer();
 		});
-		var __inst = __pool__.get();
-			__inst.__pool__ = __pool__;
-			__inst.__init__(_block, _scope);
-			if (BROADCAST_BEHAVIOUR_FLAGS & BROADCAST_BEHAVIOUR.REASSIGN_INSTANCE_ID 
-				&& __inst.__id = undefined) {
-				__inst.__num_id++;
-				__inst.__id = __inst.__num_id;
-			}
-		return __inst;
+		__inst = __pool__.get();
+		__inst.__pool__ = __pool__;
+	} else {
+		__inst =  new __BROADCAST_class_viewer();
 	}
-	return new __BROADCAST_class_viewer(_block, _scope)	
+	__inst.__init__(_block, _scope);
+	return __inst;
 }
 function Watchlist() {
+	var __inst;
 	if (BROADCAST_BEHAVIOUR_FLAGS & BROADCAST_BEHAVIOUR.USE_OBJECT_POOL) {
 		static __pool__ = new ObjectPool( function() {
 			return new __BROADCAST_class_watchlist();
 		});
-		var __inst = __pool__.get();
-			__inst.__pool__ = __pool__;
-			__inst.__init__();
-			if (BROADCAST_BEHAVIOUR_FLAGS & BROADCAST_BEHAVIOUR.REASSIGN_INSTANCE_ID 
-				&& __inst.__id = undefined) {
-				__inst.__num_id++;
-				__inst.__id = __inst.__num_id;
-			}
-		return __inst;
+		__inst = __pool__.get();
+		__inst.__pool__ = __pool__;
+	} else {
+		__inst = new __BROADCAST_class_watchlist();
 	}
-	return new __BROADCAST_class_watchlist();	
+	__inst.__init__();
+	return __inst;
 }
 
 /// @func RecursiveBroadcastWatch

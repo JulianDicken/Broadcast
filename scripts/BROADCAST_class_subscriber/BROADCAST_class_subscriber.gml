@@ -33,8 +33,11 @@ function __BROADCAST_class_subscriber(_block = function() {  }, _scope) : __Stru
 	}
 	
 	static __init__ = function(_block, _scope) {
+		if (BROADCAST_BEHAVIOUR_FLAGS & BROADCAST_BEHAVIOUR.REASSIGN_INSTANCE_ID && __id = undefined) {
+			__num_id++;
+			__id = __num_id;
+		}
 		__scope = _scope ?? method_get_self(_block);
 		__block = method(__scope, _block);
 	}
-	__init__(_block, _scope);
 }

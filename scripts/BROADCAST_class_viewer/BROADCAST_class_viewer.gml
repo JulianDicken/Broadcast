@@ -1,6 +1,6 @@
 function __BROADCAST_class_viewer(_block = function() {  }, _scope) : __Struct__() constructor {
 	static __num_id = 0; __num_id++;
-	static __pool__ = undefined;
+	__pool__ = undefined;
 	__id = __num_id;
 	
 	__Type__.add( __BROADCAST_class_viewer );
@@ -35,10 +35,12 @@ function __BROADCAST_class_viewer(_block = function() {  }, _scope) : __Struct__
 	}
 	
 	static __init__ = function(_block, _scope) {
+		if (BROADCAST_BEHAVIOUR_FLAGS & BROADCAST_BEHAVIOUR.REASSIGN_INSTANCE_ID && __id = undefined) {
+			__num_id++;
+			__id = __num_id;
+		}
 		__scope = _scope ?? method_get_self(_block);
 		__block = method(__scope, _block);
 		__expired = false;
 	}
-	
-	__init__(_block, _scope);
 }
