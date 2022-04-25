@@ -28,7 +28,12 @@ function __BROADCAST_class_subscriber(_block = function() {  }, _scope) : __Stru
 		}
 	}
 	
-	static __dispatch = function() {
+	static __dispatch = function(args) {
+        var ctx = method_get_self(__block);
+        var tmp = variable_struct_get_names(args);
+        var i = -1; repeat( array_length(tmp) ) { ++i;
+            ctx[$ tmp[i]] = args[$ tmp[i]];
+        }
 		__block();	
 	}
 	

@@ -62,7 +62,7 @@
     "eventToFunction": {},
     "eventStubScript": null,
     "parent": {"name":"gfx_sys_disk0","path":"sprites/gfx_sys_disk0/gfx_sys_disk0.yy",},
-    "resourceVersion": "1.3",
+    "resourceVersion": "1.4",
     "name": "gfx_sys_disk0",
     "tags": [],
     "resourceType": "GMSequence",

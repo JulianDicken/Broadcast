@@ -27,9 +27,9 @@ function __BROADCAST_class_broadcast(_block = function() {  }, _scope) : __Struc
 		return self;
 	}
 	
-	static dispatch = function() {
+	static dispatch = function(args) {
 		__recursive_stack_limit = 0xFFFF;
-		__dispatch();	
+		__dispatch(args);	
 	}
 	
 	static destroy = function() {
@@ -50,21 +50,21 @@ function __BROADCAST_class_broadcast(_block = function() {  }, _scope) : __Struc
 		_broadcast.__hooks.push( self );	
 	}
 	
-	static __dispatch = function() {
+	static __dispatch = function(args) {
 		if (BROADCAST_SAFETY_FLAGS & BROADCAST_SAFETY.DISPATCH) {
 			if (--__recursive_stack_limit <= 0) {
 				throw new RecursiveDispatchError(self);	
 			}
 		}
-		__block();
+		__block(args);
 		var _i = 0; repeat( __hooks.size()) {
             if (struct_type(__hooks.index(_i), __BROADCAST_class_viewer)) {
 				var viewer = __hooks.pop(_i);
-				viewer.__dispatch();
+				viewer.__dispatch(args);
 				viewer.destroy();
 			}
             else
-                __hooks.index(_i++).__dispatch();
+                __hooks.index(_i++).__dispatch(args);
         }
 	}
 	
