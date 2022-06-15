@@ -62,7 +62,7 @@
     "eventToFunction": {},
     "eventStubScript": null,
     "parent": {"name":"gfx_sys_terminal0","path":"sprites/gfx_sys_terminal0/gfx_sys_terminal0.yy",},
-    "resourceVersion": "1.4",
+    "resourceVersion": "1.3",
     "name": "gfx_sys_terminal0",
     "tags": [],
     "resourceType": "GMSequence",

@@ -30,12 +30,7 @@ function __BROADCAST_class_viewer(_block = function() {  }, _scope) : __Struct__
 		}
 	}
 	
-	static __dispatch = function(args) {		
-        var ctx = method_get_self(__block);
-        var tmp = variable_struct_get_names(args);
-        var i = -1; repeat( array_length(tmp) ) { ++i;
-            ctx[$ tmp[i]] = args[$ tmp[i]];
-        }
+	static __dispatch = function() {		
 		__block();	
 	}
 	

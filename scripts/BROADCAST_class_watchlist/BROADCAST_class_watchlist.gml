@@ -37,9 +37,9 @@ function __BROADCAST_class_watchlist() : __Struct__() constructor  {
 		}
 	}
 	
-	static dispatch = function(args) {
+	static dispatch = function() {
 		__recursive_stack_limit = 0xFFFF;
-		__dispatch(args);	
+		__dispatch();	
 	}
 	
 	static __dispatch = function() {
@@ -51,11 +51,11 @@ function __BROADCAST_class_watchlist() : __Struct__() constructor  {
 		var _i = 0; repeat( __hooks.size()) {
             if (struct_type(__hooks.index(_i), __BROADCAST_class_viewer)) {
 				var viewer = __hooks.pop(_i);
-				viewer.__dispatch(args);
+				viewer.__dispatch();
 				viewer.destroy();
 			}
             else
-                __hooks.index(_i++).__dispatch(args);
+                __hooks.index(_i++).__dispatch();
         }
 	}
 	
