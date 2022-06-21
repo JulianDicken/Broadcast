@@ -1,16 +1,30 @@
-#macro syslog show_debug_message
+o = timeit(1000, function() {
+    hello = Broadcast_old( function() {
+ 	    str = "hello"
+    });
 
-watchlist = Watchlist(function() {
+    world = Subscriber_old( function() {
+     	str = "world"
+    }).watch(hello);
 
+    hello.dispatch();
+    
+    hello.destroy();
+    world.destroy();
 });
-broadcastA = Broadcast( function() {
-  syslog("Dispatched broadcastA.");
-});
-broadcastB = Broadcast( function() {
-  syslog("Dispatched broadcastB.");
-});
-watchlist.watch( broadcastA );
-watchlist.watch( broadcastB );
 
-broadcastA.dispatch();
-broadcastB.dispatch();
+n = timeit(1000, function() {
+    hello = Broadcast( function() {
+ 	    str = "hello"
+    });
+
+    world = Subscriber( function() {
+     	str = "world"
+    }).watch(hello);
+
+    hello.dispatch();
+    
+    hello.destroy();
+    world.destroy();
+});
+show_message(string_format((n.average / o.average) * 100, 16, 16));

@@ -1,7 +1,5 @@
 {
   "resources": [
-    {"id":{"name":"oButtonExample","path":"objects/oButtonExample/oButtonExample.yy",},"order":3,},
-    {"id":{"name":"sTest","path":"sprites/sTest/sTest.yy",},"order":5,},
     {"id":{"name":"oManager","path":"objects/oManager/oManager.yy",},"order":4,},
     {"id":{"name":"rm_main","path":"rooms/rm_main/rm_main.yy",},"order":0,},
     {"id":{"name":"__class_Broadcast","path":"scripts/__class_Broadcast/__class_Broadcast.yy",},"order":0,},
