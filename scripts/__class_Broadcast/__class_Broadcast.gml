@@ -168,7 +168,7 @@ function __class_Broadcast() constructor {
 		
 		var i = -1; 
 		var n = ds_list_size(__hooks); 
-		repeat(n) {  i++;    
+		repeat(n) {  i++;
 		    switch (argument_count) {
     			case  0: __hooks[| i].__dispatch();
 					break;
