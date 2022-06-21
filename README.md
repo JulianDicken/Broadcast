@@ -113,7 +113,9 @@ prints:
 ### Watchlists
 **Watchlists** serve as **Broadcast** queues :
 ```js
-watchlist = Watchlist();
+watchlist = Watchlist( function() {
+  syslog("Watchlist Finished!")
+});
 broadcastA = Broadcast( function() {
   syslog("Dispatched broadcastA.")
 });
@@ -123,12 +125,8 @@ broadcastB = Broadcast( function() {
 watchlist.add( broadcastA );
 watchlist.add( broadcastB );
 
-Viewer( function() {
-  syslog("Watchlist Finished!")
-}).watch( watchlist.onFinished );
 ```
-Once all registered **Broadcasts** have been dispatched the `watchlist.OnFinished` **Broadcast** will be dispatched.
-It is important to call `watchlist.update();` in an update loop (I recommend the begin step event), otherwise this won't work.
+Once all registered **Broadcasts** have been dispatched the watchlist callback will be called.
 
 ---
 ### Safety
