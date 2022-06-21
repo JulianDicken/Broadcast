@@ -15,11 +15,12 @@ function Watchlist(callback, scope) {
 }
 
 function __class_Watchlist() constructor {
-    static __type = __broadcastType.Broadcast;
+    static __base_type = __broadcastType.Broadcast;
     static __recursion_depth = 0;
     static __num_id = 0;
     __id    = undefined;
-
+    __type = undefined;
+    
     __hooks = undefined;
     __registry = undefined;
 
@@ -28,6 +29,7 @@ function __class_Watchlist() constructor {
 
     static __init = function(callback, scope) {
         __id = ++__num_id;
+        __type = __base_type;
         
         __hooks ??= ds_list_create();
         __registry ??= ds_list_create();
@@ -35,6 +37,11 @@ function __class_Watchlist() constructor {
 	    __callback  = callback  ?? function() /*=>*/ {return undefined};
 	    __scope     = scope     ?? method_get_self(__callback);
 	    return self;
+    }
+    
+    static destroy = function() {
+    	ds_stack_push(global.__watchlist_pool, self);
+    	__type |= __broadcastType.Zombie;
     }
     
     static watch = function(hook) {
@@ -54,7 +61,7 @@ function __class_Watchlist() constructor {
         var i = -1;
         var n = ds_list_size(__registry);
         repeat (n) { i++;
-			if (__registry[| i].__zombie) {
+			if ((__registry[| i][$ "__type"] ?? 0x00) & __broadcastType.Zombie) {
 				ds_list_delete(__registry, i);
 				i--;
 				

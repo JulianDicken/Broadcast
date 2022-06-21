@@ -15,10 +15,11 @@ function Broadcast(callback, scope) {
 }
 
 function __class_Broadcast() constructor {
-    static __type = __broadcastType.Broadcast | __broadcastType.Hook;
+    static __base_type = __broadcastType.Broadcast | __broadcastType.Hook;
     static __recursion_depth = 0;
     static __num_id = 0;
     __id    = undefined;
+    __type = undefined;
     
     __hooks = undefined;
     
@@ -27,12 +28,18 @@ function __class_Broadcast() constructor {
 
     static __init = function(callback, scope) {
         __id = ++__num_id;
+        __type = __base_type;
         
 	    __hooks ??= ds_list_create();
 	    
 	    __callback  = callback  ?? function() /*=>*/ {return undefined};
 	    __scope     = scope     ?? method_get_self(__callback);
 	    return self;
+    }
+    
+    static destroy = function() {
+    	ds_stack_push(global.__broadcast_pool, self);
+    	__type |= __broadcastType.Zombie;
     }
     
     static watch = function(broadcast) {
@@ -207,7 +214,7 @@ function __class_Broadcast() constructor {
 			    //default: __broadcast_warning("Can't use more than 16 arguments."); break;
 		    }
 		    
-		    if ((__hooks[| i][$ "__type"] ?? 0x00) & __broadcastType.Volatile) {
+		    if ((__hooks[| i][$ "__type"] ?? 0x00) & (__broadcastType.Volatile | __broadcastType.Zombie)) {
 		        ds_list_delete(__hooks, i--);
 		    }
 		}

@@ -58,6 +58,7 @@ function __broadcast_try_find_instance_name(inst) {
 enum __broadcastType {
     Broadcast = 0x01,
     Hook = 0x02,
-    Volatile = 0x04
+    Volatile = 0x04,
+    Zombie = 0x08
 }
 

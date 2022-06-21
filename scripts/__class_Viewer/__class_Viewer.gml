@@ -15,22 +15,27 @@ function Viewer(callback, scope) {
 }
 
 function __class_Viewer() constructor {
-    static __type = __broadcastType.Hook | __broadcastType.Volatile;
+    static __base_type = __broadcastType.Hook | __broadcastType.Volatile;
     static __num_id = 0;
     __id    = undefined;
+    __type = undefined;
 
     __callback = function() /*=>*/ {return undefined};
     __scope = undefined;
-	
-	__zombie = undefined;
+    
     static __init = function(callback, scope) {
         __id = ++__num_id;
+        __type = __base_type;
 
 	    __callback  = callback  ?? function() /*=>*/ {return undefined};
 	    __scope     = scope     ?? method_get_self(__callback);
-	    
-	    __zombie = false;
+
 	    return self;
+    }
+    
+    static destroy = function() {
+    	ds_stack_push(global.__viewer_pool, self);
+    	__type |= __broadcastType.Zombie;
     }
     
     static watch = function(broadcast) {
