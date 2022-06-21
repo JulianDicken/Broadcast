@@ -1,11 +1,16 @@
 #macro BROADCAST_BROADCAST_MAX_POOL_SIZE 64
 #macro BROADCAST_SUBSCRIBER_MAX_POOL_SIZE 64
 #macro BROADCAST_VIEWER_MAX_POOL_SIZE 64
+#macro BROADCAST_WATCHLIST_MAX_POOL_SIZE 64
 
+//only touch if you know how this affects your game, OxFFFF is a reasonable default
 #macro BROADCAST_RECURSION_MAX_DEPTH 0xFFFF
 
+//do not touch
 #macro BROADCAST_ERROR_LOGGER show_message
 #macro BROADCAST_WARN_LOGGER show_message
+#macro BROADCAST_ERROR_NOT_A_BROADCAST __broadcast_error_generic("Provided argument is not a Broadcast, got <", typeof(hook), "> instead");
+#macro BROADCAST_ERROR_NOT_A_HOOK __broadcast_error_generic("Provided argument is not a Hook, got <", typeof(broadcast), "> instead");
 #macro BROADCAST_ERROR_RECURSIVE_DISPATCH __broadcast_error_generic("Recursive dispatch at ", __broadcast_try_find_instance_name(self));
 #macro BROADCAST_WARNING_RECURSIVE_WATCH __broadcast_warn_generic("Recursive watch at ", __broadcast_try_find_instance_name(self), " with ", __broadcast_try_find_instance_name(broadcast));
 
@@ -52,7 +57,7 @@ function __broadcast_try_find_instance_name(inst) {
 
 enum __broadcastType {
     Broadcast = 0x01,
-    Subscriber = 0x02,
+    Hook = 0x02,
     Volatile = 0x04
 }
 

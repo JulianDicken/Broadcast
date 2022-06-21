@@ -1,12 +1,12 @@
-function Broadcast(callback, scope) {
+function Watchlist(callback, scope) {
     static __pool = function() {
-        global.__broadcast_pool = ds_stack_create();
-        return global.__broadcast_pool;
+        global.__watchlist_pool = ds_stack_create();
+        return global.__watchlist_pool;
     }();
     if (ds_stack_size(__pool) == 0) {
-        ds_stack_push(__pool, new __class_Broadcast());
+        ds_stack_push(__pool, new __class_Watchlist());
     }
-    while (ds_stack_size(__pool) > 1 && ds_stack_size(__pool) > BROADCAST_BROADCAST_MAX_POOL_SIZE - 1) {
+    while (ds_stack_size(__pool) > 1 && ds_stack_size(__pool) > BROADCAST_WATCHLIST_MAX_POOL_SIZE - 1) {
         ds_stack_pop(__pool);
     }
     return ds_stack_pop(__pool).__init(
@@ -14,70 +14,55 @@ function Broadcast(callback, scope) {
     );
 }
 
-function __class_Broadcast() constructor {
-    static __type = __broadcastType.Broadcast | __broadcastType.Hook;
+function __class_Watchlist() constructor {
+    static __type = __broadcastType.Broadcast;
     static __recursion_depth = 0;
     static __num_id = 0;
     __id    = undefined;
-    
+
     __hooks = undefined;
-    
+    __registry = undefined;
+
     __callback = function() /*=>*/ {return undefined};
     __scope = undefined;
 
     static __init = function(callback, scope) {
         __id = ++__num_id;
         
-	    __hooks ??= ds_list_create();
-	    
+        __hooks ??= ds_list_create();
+        __registry ??= ds_list_create();
+        
 	    __callback  = callback  ?? function() /*=>*/ {return undefined};
 	    __scope     = scope     ?? method_get_self(__callback);
 	    return self;
     }
     
-    static watch = function(broadcast) {
-    	if !(is_struct(broadcast) && (broadcast[$ "__type"] ?? 0x00) & __broadcastType.Broadcast) {
-    		BROADCAST_ERROR_NOT_A_BROADCAST
+    static watch = function(hook) {
+        if !(is_struct(hook) && (hook[$ "__type"] ?? 0x00) & __broadcastType.Hook) {
+        	BROADCAST_ERROR_NOT_A_HOOK
 		    return;
 		}
-    	__watch(broadcast);
-    	
-    	if (broadcast == self) {
-    		BROADCAST_WARNING_RECURSIVE_WATCH
-    		return;
-    	}
-    	
-    	var _selfIdx = broadcast.__find(self);
-    	var _otherIdx = self.__find(broadcast);
-    	if (_selfIdx != -1 && _otherIdx != -1) {
-    		BROADCAST_WARNING_RECURSIVE_WATCH
-    		return;
-    	}
+		return __watch(hook);
     }
     
     static __watch = function(broadcast) {
-        ds_list_add(broadcast.__hooks, self);
+        ds_list_add(__registry, Viewer(function() /*=>*/ {return self.update()}).watch( broadcast ));
         return self;
     }
     
-    static __find = function(broadcast) {
-    	var idx = ds_list_find_index(__hooks, broadcast);
-    	if (idx != -1) {
-    		return idx;
-    	}
-    	
-		var i = -1; 
-		var n = ds_list_size(__hooks);
-		repeat(n) { i++;
-			syslog((__hooks[| i][$ "__type"] ?? 0x00));
-            if ((__hooks[| i][$ "__type"] ?? 0x00) & __broadcastType.Broadcast) {
-    			var idx = __hooks[| i].__find(broadcast);
-    	    	if (idx != -1) {
-    	    		return idx;
-    	    	}
-            }
-		}
-		return -1;
+    static update = function() {
+        var i = -1;
+        var n = ds_list_size(__registry);
+        repeat (n) { i++;
+			if (__registry[| i].__zombie) {
+				ds_list_delete(__registry, i);
+				i--;
+				
+				if (ds_list_size(__registry) == 0) {
+					dispatch();	
+				}
+			}
+        }
     }
     
     static dispatch = function() {

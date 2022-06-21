@@ -8,6 +8,7 @@
     {"id":{"name":"__class_Subscriber","path":"scripts/__class_Subscriber/__class_Subscriber.yy",},"order":1,},
     {"id":{"name":"__class_Viewer","path":"scripts/__class_Viewer/__class_Viewer.yy",},"order":2,},
     {"id":{"name":"__const_Broadcast","path":"scripts/__const_Broadcast/__const_Broadcast.yy",},"order":3,},
+    {"id":{"name":"__class_Watchlist","path":"scripts/__class_Watchlist/__class_Watchlist.yy",},"order":4,},
   ],
   "Options": [
     {"name":"Linux","path":"options/linux/options_linux.yy",},

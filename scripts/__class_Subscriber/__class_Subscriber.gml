@@ -15,7 +15,7 @@ function Subscriber(callback, scope) {
 }
 
 function __class_Subscriber() constructor {
-    static __type = __broadcastType.Subscriber;
+    static __type = __broadcastType.Hook;
     static __num_id = 0;
     __id    = undefined;
 
@@ -31,7 +31,8 @@ function __class_Subscriber() constructor {
     }
     
     static watch = function(broadcast) {
-        if !((broadcast[$ "__type"] ?? 0x00) & __broadcastType.Broadcast) {
+        if !(is_struct(broadcast) && (broadcast[$ "__type"] ?? 0x00) & __broadcastType.Broadcast) {
+        	BROADCAST_ERROR_NOT_A_BROADCAST
 		    return;
 		}
 		return __watch(broadcast);

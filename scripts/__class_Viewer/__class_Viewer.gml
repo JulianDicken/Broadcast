@@ -15,23 +15,27 @@ function Viewer(callback, scope) {
 }
 
 function __class_Viewer() constructor {
-    static __type = __broadcastType.Subscriber | __broadcastType.Volatile;
+    static __type = __broadcastType.Hook | __broadcastType.Volatile;
     static __num_id = 0;
     __id    = undefined;
 
     __callback = function() /*=>*/ {return undefined};
     __scope = undefined;
-
+	
+	__zombie = undefined;
     static __init = function(callback, scope) {
         __id = ++__num_id;
 
 	    __callback  = callback  ?? function() /*=>*/ {return undefined};
 	    __scope     = scope     ?? method_get_self(__callback);
+	    
+	    __zombie = false;
 	    return self;
     }
     
     static watch = function(broadcast) {
-        if !((broadcast[$ "__type"] ?? 0x00) & __broadcastType.Broadcast) {
+        if !(is_struct(broadcast) && (broadcast[$ "__type"] ?? 0x00) & __broadcastType.Broadcast) {
+        	BROADCAST_ERROR_NOT_A_BROADCAST
 		    return;
 		}
 		return __watch(broadcast);
@@ -43,6 +47,8 @@ function __class_Viewer() constructor {
     }
     
     static __dispatch = function() {
+    	__zombie = true;
+    	
         switch (argument_count) {
 			case  0: __callback();
 				break;
