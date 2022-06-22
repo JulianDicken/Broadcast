@@ -1,4 +1,4 @@
-function Radio(callback, scope, frequency, unit) {
+function Radio(callback, frequency, unit, scope) {
     static __pool = function() {
         global.__radio_pool = ds_stack_create();
         return global.__radio_pool;
@@ -71,9 +71,9 @@ function __class_Radio() constructor {
     static update = function() {
         switch __unit {
             case 0:
-                __counter += min(BROADCAST_RADIO_FLOOR_FRAMES, delta_time*0.000001);
-                __steps = floor(__frequency * __counter);
-                __counter -= __steps / __frequency;
+                __counter	+= min(BROADCAST_RADIO_FLOOR_FRAMES, delta_time*0.000001);
+                __steps 	= floor(__frequency * __counter);
+                __counter	-= __steps / __frequency;
                 
                 repeat( __steps ) {
                     dispatch();
