@@ -19,6 +19,9 @@ prints:
  **Broadcasts** are event sources and **dispatching** them cascades event invocation down to
  **Broadcast Hooks**. **Broadcasts** *can* be **Broadcast Hooks** too.
 
+
+Broadcasts take two optional arguments, a callback and their desired scope.
+
  ---
 ### Subscribers
 ```js
@@ -39,6 +42,8 @@ hello.dispatch();
  ```
 This creates a **Subscriber**. A **Subscriber** is a type of **Broadcast Hook**.
 A **Subscriber** can only watch **Broadcasts** and cannot cascade **dispatches** downwards.
+
+Subscribers take two optional arguments, a callback and their desired scope.
 
 ---
 ### Consumers
@@ -63,10 +68,12 @@ prints:
  A **Consumer** can only watch **Broadcasts** and cannot cascade **dispatches** downwards.
  A **Consumer** is *volatile* and will only be **dispatched** once.
 
+Consumers take two optional arguments, a callback and their desired scope.
+
  ---
 
  Combined **Subscribers** and **Consumers** can be used as following:
- ```js
+```js
 update = Broadcast( function() {
   syslog("Update");
 });
@@ -109,6 +116,8 @@ watchlist.add( broadcastB );
 ```
 Once all registered **Broadcasts** have been dispatched the watchlist will dispatch.
 
+Watchlists take two optional arguments, a callback and their desired scope.
+
 ---
 ### Radios
 **Radios** are a type of **Broadcast** and serve as repeating broadcast sources.
@@ -124,6 +133,8 @@ A radio will call infinitely with the set frequency.
 Radios are not a type of Hook.
 
 **Warning**: If you are using a pre 2022.5 runtime you will need to call radio.update() in a step event somewhere.
+
+Radios take four optional arguments, a callback, the unit of time (false: seconds, true: frames), the update frequence and their desired scope.
 
 ---
 ### Safety
