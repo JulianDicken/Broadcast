@@ -1,4 +1,4 @@
-function Radio(callback, frequency, unit, scope) {
+function Radio(callback, frequency = 1, unit = 1, scope = undefined) {
     static __pool = function() {
         global.__radio_pool = ds_stack_create();
         return global.__radio_pool;
