@@ -1,4 +1,4 @@
-function Broadcast(callback, scope = undefined) {
+function Broadcast(callback = undefined, scope = undefined) {
     static __pool = function() {
         global.__broadcast_pool = ds_stack_create();
         return global.__broadcast_pool;

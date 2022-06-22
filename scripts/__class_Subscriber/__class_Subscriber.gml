@@ -1,4 +1,4 @@
-function Subscriber(callback, scope = undefined) {
+function Subscriber(callback = undefined, scope = undefined) {
     static __pool = function() {
         global.__subscriber_pool = ds_stack_create();
         return global.__subscriber_pool;
