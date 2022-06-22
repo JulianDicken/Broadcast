@@ -1,11 +1,11 @@
 //n = timeit(1000, function() {
     hello = Broadcast( function() {
  	    str = "hello"
-    });
+    }, id);
 
     world = Subscriber( function() {
      	str = "world"
-    }).watch(hello);
+    }, id).watch(hello);
 
     hello.dispatch();
     
