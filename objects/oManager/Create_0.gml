@@ -1,19 +1,4 @@
-o = timeit(1000, function() {
-    hello = Broadcast_old( function() {
- 	    str = "hello"
-    });
-
-    world = Subscriber_old( function() {
-     	str = "world"
-    }).watch(hello);
-
-    hello.dispatch();
-    
-    hello.destroy();
-    world.destroy();
-});
-
-n = timeit(1000, function() {
+//n = timeit(1000, function() {
     hello = Broadcast( function() {
  	    str = "hello"
     });
@@ -26,5 +11,5 @@ n = timeit(1000, function() {
     
     hello.destroy();
     world.destroy();
-});
-show_message(string_format((n.average / o.average) * 100, 16, 16));
+//});
+//show_message(string_format((n.average) / 1000000, 16, 16));

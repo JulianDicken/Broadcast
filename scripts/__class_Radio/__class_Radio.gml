@@ -1,21 +1,21 @@
-function Broadcast(callback, scope) {
+function Radio(callback, scope, frequency, unit) {
     static __pool = function() {
-        global.__broadcast_pool = ds_stack_create();
-        return global.__broadcast_pool;
+        global.__radio_pool = ds_stack_create();
+        return global.__radio_pool;
     }();
     if (ds_stack_size(__pool) == 0) {
-        ds_stack_push(__pool, new __class_Broadcast());
+        ds_stack_push(__pool, new __class_Radio());
     }
-    while (ds_stack_size(__pool) > 1 && ds_stack_size(__pool) > BROADCAST_BROADCAST_MAX_POOL_SIZE ) {
+    while (ds_stack_size(__pool) > 1 && ds_stack_size(__pool) > BROADCAST_RADIO_MAX_POOL_SIZE) {
         ds_stack_pop(__pool);
     }
     return ds_stack_pop(__pool).__init(
-        callback, scope
+        callback, scope, frequency, unit
     );
 }
 
-function __class_Broadcast() constructor {
-    static __base_type = __broadcastType.Broadcast | __broadcastType.Hook;
+function __class_Radio() constructor {
+    static __base_type = __broadcastType.Broadcast;
     static __recursion_depth = 0;
     static __num_id = 0;
     __id    = undefined;
@@ -25,8 +25,15 @@ function __class_Broadcast() constructor {
     
     __callback = function() /*=>*/ {return undefined};
     __scope = undefined;
+    
+    __frequency = undefined;
+    __unit      = undefined;
+    __timesource = undefined;
+    
+    __counter = undefined;
+    __steps   = undefined;
 
-    static __init = function(callback, scope) {
+    static __init = function(callback, scope, frequency = 1, unit = 1) {
         __id = ++__num_id;
         __type = __base_type;
         
@@ -34,57 +41,52 @@ function __class_Broadcast() constructor {
 	    
 	    __callback  = callback  ?? function() /*=>*/ {return undefined};
 	    __scope     = scope     ?? method_get_self(__callback);
-	    return self;
-    }
-    
-    static destroy = function() {
-    	ds_stack_push(global.__broadcast_pool, self);
-    	__type |= __broadcastType.Zombie;
-    }
-    
-    static watch = function(broadcast) {
-    	if !(is_struct(broadcast) && (broadcast[$ "__type"] ?? 0x00) & __broadcastType.Broadcast) {
-    		BROADCAST_ERROR_NOT_A_BROADCAST
-		    return;
-		}
-    	__watch(broadcast);
-    	
-    	if (broadcast == self) {
-    		BROADCAST_WARNING_RECURSIVE_WATCH
-    		return;
-    	}
-    	
-    	var _selfIdx = broadcast.__find(self);
-    	var _otherIdx = self.__find(broadcast);
-    	if (_selfIdx != -1 && _otherIdx != -1) {
-    		BROADCAST_WARNING_RECURSIVE_WATCH
-    		return;
-    	}
-    }
-    
-    static __watch = function(broadcast) {
-        ds_list_add(broadcast.__hooks, self);
-        return self;
-    }
-    
-    static __find = function(broadcast) {
-    	var idx = ds_list_find_index(__hooks, broadcast);
-    	if (idx != -1) {
-    		return idx;
-    	}
-    	
-		var i = -1; 
-		var n = ds_list_size(__hooks);
-		repeat(n) { i++;
-			syslog((__hooks[| i][$ "__type"] ?? 0x00));
-            if ((__hooks[| i][$ "__type"] ?? 0x00) & __broadcastType.Broadcast) {
-    			var idx = __hooks[| i].__find(broadcast);
-    	    	if (idx != -1) {
-    	    		return idx;
-    	    	}
+	    
+	    __frequency = frequency;
+	    __unit      = unit;
+	    //Attempt to set up a time source for slick automatic input handling
+	    if (__timesource == undefined) {
+            try {
+                //GMS2022.500.58 runtime
+                __timesource = time_source_create(time_source_game, __frequency, __unit, function() {
+                    dispatch();
+                }, [], -1);
+                time_source_start(__timesource);
+            } catch(_error) {
+                try {
+                    //Early GMS2022.500.xx runtimes
+                    __timesource = time_source_create(time_source_game, __frequency, __unit, function() {
+                        dispatch();
+                    }, -1);
+                    time_source_start(__timesource);
+                } catch(_error) {
+                    BROADCAST_WARNING_v20225
+                    __timesource = undefined;
+                }
             }
-		}
-		return -1;
+    	    return self;
+        }
+    }
+    
+    static update = function() {
+        switch __unit {
+            case 0:
+                __counter += min(BROADCAST_RADIO_FLOOR_FRAMES, delta_time*0.000001);
+                __steps = floor(__frequency * __counter);
+                __counter -= __steps / __frequency;
+                
+                repeat( __steps ) {
+                    dispatch();
+                }
+            break;
+            case 1:
+                __counter++;
+                __counter %= __frequency;
+                if (__counter == 0) {
+                    dispatch();
+                }
+            break;
+        }
     }
     
     static dispatch = function() {

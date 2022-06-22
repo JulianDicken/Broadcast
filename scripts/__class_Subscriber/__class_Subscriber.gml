@@ -6,7 +6,7 @@ function Subscriber(callback, scope) {
     if (ds_stack_size(__pool) == 0) {
         ds_stack_push(__pool, new __class_Subscriber());
     }
-    while (ds_stack_size(__pool) > 1 && ds_stack_size(__pool) > BROADCAST_SUBSCRIBER_MAX_POOL_SIZE - 1) {
+    while (ds_stack_size(__pool) > 1 && ds_stack_size(__pool) > BROADCAST_SUBSCRIBER_MAX_POOL_SIZE ) {
         ds_stack_pop(__pool);
     }
     return ds_stack_pop(__pool).__init(
@@ -23,7 +23,6 @@ function __class_Subscriber() constructor {
     __callback = function() /*=>*/ {return undefined};
     __scope = undefined;
 
-	__zombie = undefined;
     static __init = function(callback, scope) {
         __id = ++__num_id;
         __type = __base_type;
@@ -31,7 +30,6 @@ function __class_Subscriber() constructor {
 	    __callback  = callback  ?? function() /*=>*/ {return undefined};
 	    __scope     = scope     ?? method_get_self(__callback);
 	    
-	    __zombie = false;
 	    return self;
     }
     

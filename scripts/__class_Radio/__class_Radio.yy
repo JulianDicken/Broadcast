@@ -6,7 +6,7 @@
     "path": "folders/BROADCAST.yy",
   },
   "resourceVersion": "1.0",
-  "name": "__class_Viewer",
+  "name": "__class_Radio",
   "tags": [],
   "resourceType": "GMScript",
 }

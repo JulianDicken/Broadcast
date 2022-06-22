@@ -6,7 +6,7 @@ function Watchlist(callback, scope) {
     if (ds_stack_size(__pool) == 0) {
         ds_stack_push(__pool, new __class_Watchlist());
     }
-    while (ds_stack_size(__pool) > 1 && ds_stack_size(__pool) > BROADCAST_WATCHLIST_MAX_POOL_SIZE - 1) {
+    while (ds_stack_size(__pool) > 1 && ds_stack_size(__pool) > BROADCAST_WATCHLIST_MAX_POOL_SIZE ) {
         ds_stack_pop(__pool);
     }
     return ds_stack_pop(__pool).__init(
@@ -53,7 +53,7 @@ function __class_Watchlist() constructor {
     }
     
     static __watch = function(broadcast) {
-        ds_list_add(__registry, Viewer(function() /*=>*/ {return self.update()}).watch( broadcast ));
+        ds_list_add(__registry, Consumer(function() /*=>*/ {return self.update()}).watch( broadcast ));
         return self;
     }
     

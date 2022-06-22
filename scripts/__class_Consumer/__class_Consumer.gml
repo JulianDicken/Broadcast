@@ -1,12 +1,12 @@
-function Viewer(callback, scope) {
+function Consumer(callback, scope) {
     static __pool = function() {
-        global.__viewer_pool = ds_stack_create();
-        return global.__viewer_pool;
+        global.__consumer_pool = ds_stack_create();
+        return global.__consumer_pool;
     }();
     if (ds_stack_size(__pool) == 0) {
-        ds_stack_push(__pool, new __class_Viewer());
+        ds_stack_push(__pool, new __class_Consumer());
     }
-    while (ds_stack_size(__pool) > 1 && ds_stack_size(__pool) > BROADCAST_VIEWER_MAX_POOL_SIZE - 1) {
+    while (ds_stack_size(__pool) > 1 && ds_stack_size(__pool) > BROADCAST_CONSUMER_MAX_POOL_SIZE - 1) {
         ds_stack_pop(__pool);
     }
     return ds_stack_pop(__pool).__init(
@@ -14,7 +14,7 @@ function Viewer(callback, scope) {
     );
 }
 
-function __class_Viewer() constructor {
+function __class_Consumer() constructor {
     static __base_type = __broadcastType.Hook | __broadcastType.Volatile;
     static __num_id = 0;
     __id    = undefined;
@@ -34,7 +34,7 @@ function __class_Viewer() constructor {
     }
     
     static destroy = function() {
-    	ds_stack_push(global.__viewer_pool, self);
+    	ds_stack_push(global.__consumer_pool, self);
     	__type |= __broadcastType.Zombie;
     }
     
