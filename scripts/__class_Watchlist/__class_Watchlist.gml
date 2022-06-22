@@ -1,4 +1,4 @@
-function Watchlist(callback, scope) {
+function Watchlist(callback, scope = undefined) {
     static __pool = function() {
         global.__watchlist_pool = ds_stack_create();
         return global.__watchlist_pool;

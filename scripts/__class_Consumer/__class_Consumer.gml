@@ -1,4 +1,4 @@
-function Consumer(callback, scope) {
+function Consumer(callback, scope = undefined) {
     static __pool = function() {
         global.__consumer_pool = ds_stack_create();
         return global.__consumer_pool;
