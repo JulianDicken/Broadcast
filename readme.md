@@ -5,7 +5,7 @@
 ### Broadcasts
 ```js
 hello = Broadcast( function() {
- 	syslog("Hello, ");
+  syslog("Hello, ");
 });
 
 hello.dispatch();
@@ -23,15 +23,15 @@ prints:
 ### Subscribers
 ```js
 hello = Broadcast( function() {
- 	syslog("Hello, ");
+  syslog("Hello, ");
 });
 
 world = Subscriber( function() {
- 	syslog("World!");
+  syslog("World!");
 }).watch(hello);
 
 hello.dispatch();
- ```
+```
  prints:
  ```
 "Hello, "
@@ -44,10 +44,10 @@ A **Subscriber** can only watch **Broadcasts** and cannot cascade **dispatches**
 ### Consumers
 ```js
 update = Broadcast( function() {
- 	syslog("Update");
+  syslog("Update");
 });
 Consumer( function() {
- 	syslog("First Frame!");
+  syslog("First Frame!");
 }).watch(update);
 
 update.dispatch();
@@ -67,15 +67,15 @@ prints:
 
  Combined **Subscribers** and **Consumers** can be used as following:
  ```js
- update = Broadcast( function() {
-  	syslog("Update");
- });
- Consumer( function() {
-  	syslog("First Frame!");
- }).watch(update);
- other_frames = Subscriber( function() {
-  	syslog("Other Frame!");
- }).watch(update);
+update = Broadcast( function() {
+  syslog("Update");
+});
+Consumer( function() {
+  syslog("First Frame!");
+}).watch(update);
+other_frames = Subscriber( function() {
+  syslog("Other Frame!");
+}).watch(update);
 
 update.dispatch();
 update.dispatch();
@@ -130,15 +130,15 @@ Radios are not a type of Hook.
 As previously mentioned **Broadcasts** can be **Hooks** too :
 ```js
 hello = Broadcast( function() {
- 	syslog("Hello, ");
+  syslog("Hello, ");
 });
 
 world = Broadcast( function() {
- 	syslog("World!");
+  syslog("World!");
 }).watch(hello);
 
 hello.dispatch();
- ```
+```
 This introduces potential problems due to recursion but BROADCAST tries to warn the user of Recursive Subscriptions.
 Unfortunately these safety checks are quite expensive.
 To circumvent them locally you can call the private version of either `watch` or `dispatch` :
@@ -148,7 +148,7 @@ recursive_fiend = Broadcast(function() {
 }, id);
 recursive_fiend.__watch(recursive_fiend);
 recursive_fiend.__dispatch();
- ```
+```
 prints:
 ```
 "I called myself!"
