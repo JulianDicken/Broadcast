@@ -1,3 +1,9 @@
+/// @function Radio(callback, frequency, unit, scope)
+/// @param {Function} callback
+/// @param {Real} frequency
+/// @param {Real} unit
+/// @param {Instance.Id, Struct} scope
+/// @return {Struct.__class_Radio} radio reference
 function Radio(callback = undefined, frequency = 1, unit = 1, scope = undefined) {
     static __pool = function() {
         global.__radio_pool = ds_stack_create();
@@ -44,10 +50,12 @@ function __class_Radio() constructor {
 	    
 	    __frequency = frequency;
 	    __unit      = unit;
-	    //Attempt to set up a time source for slick automatic input handling
+	    //Attempt to set up a time source for slick automatic update handling
 	    if (__timesource == undefined) {
             try {
                 //GMS2022.500.58 runtime
+                //Feather ignore GM1043 once
+                //Feather ignore GM1029 once
                 __timesource = time_source_create(time_source_game, __frequency, __unit, function() {
                     dispatch();
                 }, [], -1);
@@ -55,6 +63,7 @@ function __class_Radio() constructor {
             } catch(_error) {
                 try {
                     //Early GMS2022.500.xx runtimes
+                    //Feather ignore GM1041 once
                     __timesource = time_source_create(time_source_game, __frequency, __unit, function() {
                         dispatch();
                     }, -1);
@@ -71,6 +80,7 @@ function __class_Radio() constructor {
     static update = function() {
         switch __unit {
             case 0:
+                // Feather ignore GM1010 once
                 __counter	+= min(BROADCAST_RADIO_FLOOR_FRAMES, delta_time*0.000001);
                 __steps 	= floor(__frequency * __counter);
                 __counter	-= __steps / __frequency;
@@ -136,7 +146,7 @@ function __class_Radio() constructor {
         	BROADCAST_ERROR_RECURSIVE_DISPATCH
             return;
         }
-        
+        // Feather disable GM1019
         switch (argument_count) {
 			case  0: __callback();
 				break;
@@ -220,5 +230,6 @@ function __class_Radio() constructor {
 		        ds_list_delete(__hooks, i--);
 		    }
 		}
+        // Feather enable GM1019
     }
 }

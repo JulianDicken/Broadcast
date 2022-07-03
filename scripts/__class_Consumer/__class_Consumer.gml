@@ -1,3 +1,8 @@
+
+/// @function Consumer(callback, scope)
+/// @param {Function} callback
+/// @param {Instance.Id, Struct} scope
+/// @return {Struct.__class_Consumer} consumer reference
 function Consumer(callback = undefined, scope = undefined) {
     static __pool = function() {
         global.__consumer_pool = ds_stack_create();
@@ -40,6 +45,7 @@ function __class_Consumer() constructor {
     
     static watch = function(broadcast) {
         if !(is_struct(broadcast) && (broadcast[$ "__type"] ?? 0x00) & __broadcastType.Broadcast) {
+            // Feather ignore GM1013 once
         	BROADCAST_ERROR_NOT_A_BROADCAST
 		    return;
 		}
@@ -52,8 +58,7 @@ function __class_Consumer() constructor {
     }
     
     static __dispatch = function() {
-    	__zombie = true;
-    	
+    	// Feather disable GM1019
         switch (argument_count) {
 			case  0: __callback();
 				break;
@@ -91,5 +96,6 @@ function __class_Consumer() constructor {
 				break;
 			//default: __broadcast_warning("Can't use more than 16 arguments."); break;
 		}
+        // Feather enable GM1019
     }
 }

@@ -12,6 +12,7 @@
 #macro BROADCAST_ERROR_LOGGER show_message
 #macro BROADCAST_WARN_LOGGER show_message
 #macro BROADCAST_ERROR_NOT_A_BROADCAST __broadcast_error_generic("Provided argument is not a Broadcast, got <", typeof(hook), "> instead");
+    
 #macro BROADCAST_ERROR_NOT_A_HOOK __broadcast_error_generic("Provided argument is not a Hook, got <", typeof(broadcast), "> instead");
 #macro BROADCAST_ERROR_RECURSIVE_DISPATCH __broadcast_error_generic("Recursive dispatch at ", __broadcast_try_find_instance_name(self));
 #macro BROADCAST_WARNING_RECURSIVE_WATCH __broadcast_warn_generic("Recursive watch at ", __broadcast_try_find_instance_name(self), " with ", __broadcast_try_find_instance_name(broadcast));

@@ -1,3 +1,7 @@
+/// @function Watchlist(callback, scope)
+/// @param {Function} callback
+/// @param {Instance.Id, Struct} scope
+/// @return {Struct.__class_Watchlist} watchlist reference
 function Watchlist(callback = undefined, scope = undefined) {
     static __pool = function() {
         global.__watchlist_pool = ds_stack_create();
@@ -46,6 +50,7 @@ function __class_Watchlist() constructor {
     
     static watch = function(hook) {
         if !(is_struct(hook) && (hook[$ "__type"] ?? 0x00) & __broadcastType.Hook) {
+            // Feather ignore GM1013 once
         	BROADCAST_ERROR_NOT_A_HOOK
 		    return;
 		}
@@ -119,7 +124,7 @@ function __class_Watchlist() constructor {
         	BROADCAST_ERROR_RECURSIVE_DISPATCH
             return;
         }
-        
+        // Feather disable GM1019
         switch (argument_count) {
 			case  0: __callback();
 				break;
@@ -203,5 +208,6 @@ function __class_Watchlist() constructor {
 		        ds_list_delete(__hooks, i--);
 		    }
 		}
+        // Feather enable GM1019
     }
 }

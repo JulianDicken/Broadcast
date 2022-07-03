@@ -1,3 +1,7 @@
+/// @function Subscriber(callback, scope)
+/// @param {Function} callback
+/// @param {Instance.Id, Struct} scope
+/// @return {Struct.__class_Subscriber} subscriber reference
 function Subscriber(callback = undefined, scope = undefined) {
     static __pool = function() {
         global.__subscriber_pool = ds_stack_create();
@@ -40,6 +44,7 @@ function __class_Subscriber() constructor {
     
     static watch = function(broadcast) {
         if !(is_struct(broadcast) && (broadcast[$ "__type"] ?? 0x00) & __broadcastType.Broadcast) {
+            // Feather ignore GM1013 once
         	BROADCAST_ERROR_NOT_A_BROADCAST
 		    return;
 		}
@@ -52,6 +57,7 @@ function __class_Subscriber() constructor {
     }
     
     static __dispatch = function() {
+        // Feather disable GM1019
         switch (argument_count) {
 			case  0: __callback();
 				break;
@@ -89,5 +95,6 @@ function __class_Subscriber() constructor {
 				break;
 			//default: __broadcast_warning("Can't use more than 16 arguments."); break;
 		}
+        // Feather enable GM1019
     }
 }

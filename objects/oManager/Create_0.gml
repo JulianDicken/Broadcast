@@ -12,4 +12,4 @@
     hello.destroy();
     world.destroy();
 //});
-//show_message(string_format((n.average) / 1000000, 16, 16));
+//show_message(string_format((n.average) / 1000000, 16, 16))

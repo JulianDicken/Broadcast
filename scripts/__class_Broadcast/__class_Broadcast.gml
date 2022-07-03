@@ -1,3 +1,7 @@
+/// @function Broadcast(callback, scope)
+/// @param {Function} callback
+/// @param {Instance.Id, Struct} scope
+/// @return {Struct.__class_Broadcast} broadcast reference
 function Broadcast(callback = undefined, scope = undefined) {
     static __pool = function() {
         global.__broadcast_pool = ds_stack_create();
@@ -42,8 +46,11 @@ function __class_Broadcast() constructor {
     	__type |= __broadcastType.Zombie;
     }
     
+    /// @function watch(broadcast ref)
+    /// @param {Struct.__class_Broadcast} broadcast
     static watch = function(broadcast) {
     	if !(is_struct(broadcast) && (broadcast[$ "__type"] ?? 0x00) & __broadcastType.Broadcast) {
+            // Feather ignore GM1013 once
     		BROADCAST_ERROR_NOT_A_BROADCAST
 		    return;
 		}
@@ -66,7 +73,8 @@ function __class_Broadcast() constructor {
         ds_list_add(broadcast.__hooks, self);
         return self;
     }
-    
+    /// @ignore
+    /// @return {Real}
     static __find = function(broadcast) {
     	var idx = ds_list_find_index(__hooks, broadcast);
     	if (idx != -1) {
@@ -76,7 +84,6 @@ function __class_Broadcast() constructor {
 		var i = -1; 
 		var n = ds_list_size(__hooks);
 		repeat(n) { i++;
-			syslog((__hooks[| i][$ "__type"] ?? 0x00));
             if ((__hooks[| i][$ "__type"] ?? 0x00) & __broadcastType.Broadcast) {
     			var idx = __hooks[| i].__find(broadcast);
     	    	if (idx != -1) {
@@ -134,7 +141,7 @@ function __class_Broadcast() constructor {
         	BROADCAST_ERROR_RECURSIVE_DISPATCH
             return;
         }
-        
+        // Feather disable GM1019
         switch (argument_count) {
 			case  0: __callback();
 				break;
@@ -218,5 +225,6 @@ function __class_Broadcast() constructor {
 		        ds_list_delete(__hooks, i--);
 		    }
 		}
+        // Feather enable GM1019
     }
 }
