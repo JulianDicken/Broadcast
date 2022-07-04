@@ -3,7 +3,7 @@
 /// @param {Instance.Id, Struct} scope
 /// @return {Struct.__class_Watchlist} watchlist reference
 function Watchlist(callback = undefined, scope = undefined) {
-    static __pool = function() {
+    /*static __pool = function() {
         global.__watchlist_pool = ds_stack_create();
         return global.__watchlist_pool;
     }();
@@ -12,8 +12,8 @@ function Watchlist(callback = undefined, scope = undefined) {
     }
     while (ds_stack_size(__pool) > 1 && ds_stack_size(__pool) > BROADCAST_WATCHLIST_MAX_POOL_SIZE ) {
         ds_stack_pop(__pool);
-    }
-    return ds_stack_pop(__pool).__init(
+    }*/
+    return new __class_Watchlist().__init(
         callback, scope
     );
 }
@@ -44,7 +44,7 @@ function __class_Watchlist() constructor {
     }
     
     static destroy = function() {
-    	ds_stack_push(global.__watchlist_pool, self);
+    	//ds_stack_push(global.__watchlist_pool, self);
     	__type |= __broadcastType.Zombie;
     }
     

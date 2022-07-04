@@ -5,7 +5,7 @@
 /// @param {Instance.Id, Struct} scope
 /// @return {Struct.__class_Radio} radio reference
 function Radio(callback = undefined, frequency = 1, unit = 1, scope = undefined) {
-    static __pool = function() {
+    /*static __pool = function() {
         global.__radio_pool = ds_stack_create();
         return global.__radio_pool;
     }();
@@ -14,8 +14,8 @@ function Radio(callback = undefined, frequency = 1, unit = 1, scope = undefined)
     }
     while (ds_stack_size(__pool) > 1 && ds_stack_size(__pool) > BROADCAST_RADIO_MAX_POOL_SIZE) {
         ds_stack_pop(__pool);
-    }
-    return ds_stack_pop(__pool).__init(
+    }*/
+    return new __class_Radio().__init(
         callback, scope, frequency, unit
     );
 }
@@ -100,7 +100,7 @@ function __class_Radio() constructor {
     }
     
     static destroy = function() {
-    	ds_stack_push(global._radio_pool, self);
+    	//ds_stack_push(global._radio_pool, self);
     	__type |= __broadcastType.Zombie;
         
         if (__timesource != undefined) {

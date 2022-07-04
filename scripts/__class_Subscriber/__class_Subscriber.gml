@@ -3,7 +3,7 @@
 /// @param {Instance.Id, Struct} scope
 /// @return {Struct.__class_Subscriber} subscriber reference
 function Subscriber(callback = undefined, scope = undefined) {
-    static __pool = function() {
+    /*static __pool = function() {
         global.__subscriber_pool = ds_stack_create();
         return global.__subscriber_pool;
     }();
@@ -12,8 +12,8 @@ function Subscriber(callback = undefined, scope = undefined) {
     }
     while (ds_stack_size(__pool) > 1 && ds_stack_size(__pool) > BROADCAST_SUBSCRIBER_MAX_POOL_SIZE ) {
         ds_stack_pop(__pool);
-    }
-    return ds_stack_pop(__pool).__init(
+    }*/
+    return  new __class_Subscriber().__init(
         callback, scope
     );
 }
@@ -38,7 +38,7 @@ function __class_Subscriber() constructor {
     }
     
     static destroy = function() {
-    	ds_stack_push(global.__subscriber_pool, self);
+    	//ds_stack_push(global.__subscriber_pool, self);
     	__type |= __broadcastType.Zombie;
     }
     
