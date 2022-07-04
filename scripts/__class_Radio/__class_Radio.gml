@@ -73,7 +73,38 @@ function __class_Radio() constructor {
                     __timesource = undefined;
                 }
             }
-    	    return self;
+        } else {
+            try {
+                //GMS2022.500.58 runtime
+                //Feather ignore GM1043 once
+                //Feather ignore GM1029 once
+                time_source_reconfigure(__timesource, __frequency, __unit, function() {
+                    dispatch();
+                }, [], -1);
+                time_source_start(__timesource);
+            } catch(_error) {
+                try {
+                    //Early GMS2022.500.xx runtimes
+                    //Feather ignore GM1041 once
+                    time_source_reconfigure(__timesource, __frequency, __unit, function() {
+                        dispatch();
+                    }, -1);
+                    time_source_start(__timesource);
+                } catch(_error) {
+                    BROADCAST_WARNING_v20225
+                    __timesource = undefined;
+                }
+            }
+        }
+        return self;
+    }
+    
+    static destroy = function() {
+    	ds_stack_push(global._radio_pool, self);
+    	__type |= __broadcastType.Zombie;
+        
+        if (__timesource != undefined) {
+            time_source_reset(__timesource)
         }
     }
     

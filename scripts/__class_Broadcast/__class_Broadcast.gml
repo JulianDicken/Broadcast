@@ -29,7 +29,8 @@ function __class_Broadcast() constructor {
     
     __callback = function() /*=>*/ {return undefined};
     __scope = undefined;
-
+    
+    /// @return {Struct.__class_Broadcast} broadcast reference
     static __init = function(callback, scope) {
         __id = ++__num_id;
         __type = __base_type;
